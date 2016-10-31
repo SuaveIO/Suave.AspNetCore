@@ -20,12 +20,11 @@ namespace Suave.AspNetCore
         public async Task Invoke(HttpContext context)
         {
             var suaveContext = context.ToSuaveHttpContext();
-
             var asyncWorkflow = _app.Invoke(suaveContext);
             var result = await FSharpAsync.StartAsTask(
                 asyncWorkflow,
-                FSharpOption<TaskCreationOptions>.None,
-                FSharpOption<CancellationToken>.None);
+                FSharpOption<TaskCreationOptions>.Some(TaskCreationOptions.DenyChildAttach),
+                FSharpOption<CancellationToken>.Some(CancellationToken.None));
 
             await context.SetResponseFromSuaveHttpContext(result.Value);
 

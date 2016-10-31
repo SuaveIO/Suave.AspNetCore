@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using Microsoft.FSharp.Collections;
+using Suave.Logging;
 
 namespace Suave.AspNetCore
 {
@@ -12,21 +13,34 @@ namespace Suave.AspNetCore
     {
         public static Http.HttpContext ToSuaveHttpContext(this HttpContext context)
         {
+            var req = context.Request;
+
             // Get HTTP headers
             var headers = 
                 ListModule.OfSeq(
-                    context.Request.Headers
+                    req.Headers
                         .Select(h => new Tuple<string, string>(h.Key, h.Value))
                         .ToList());
-            
+
+            // Get the absolute URL
+            var host = context.Request.Host.Value;
+            var absoluteUrl = $"{req.Scheme}://{host}{req.Path}{req.QueryString.Value}";
+
+            // Convert the body stream into a byte array
+            var rawForm = new byte[req.Body.Length];
+            req.Body.Read(rawForm, 0, rawForm.Length);
+
+
+            //TraceHeader.create()
+
             return Http.HttpContextModule.create(
                 new Http.HttpRequest(
-                    context.Request.Protocol,
-                    new Uri(""),
-                    context.Request.Host.Value,
-                    HttpMethodFromString(context.Request.Method),
+                    req.Protocol,
+                    new Uri(absoluteUrl),
+                    host, // ToDo: Check if it should contain the port or not
+                    HttpMethodFromString(req.Method),
                     headers,
-                    null, // byte[] rawForm
+                    rawForm,
                     "rawQuery",
                     null, // FSharpList<HttpUpload> files,
                     null, // FSharpList<Tuple<string,string>> multiPartFields
