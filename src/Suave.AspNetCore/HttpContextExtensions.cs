@@ -123,6 +123,8 @@ namespace Suave.AspNetCore
             }
             else if (suaveResponse.content.IsSocketTask)
             {
+                var socketTask = ((Http.HttpContent.SocketTask) suaveResponse.content).Item;
+
                 //ToDo
                 throw new NotImplementedException("SocketTask has not been implemeted yet.");
             }
