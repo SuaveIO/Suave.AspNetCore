@@ -1,17 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using Microsoft.FSharp.Collections;
 using Suave.Logging;
+using Suave.Sockets;
 
 namespace Suave.AspNetCore
 {
     public static class HttpContextExtensions
     {
-        public static Http.HttpContext ToSuaveHttpContext(this HttpContext context)
+        public static async Task<Http.HttpContext> ToSuaveHttpContext(this HttpContext context)
         {
             var req = context.Request;
 
@@ -26,28 +28,57 @@ namespace Suave.AspNetCore
             var host = context.Request.Host.Value;
             var absoluteUrl = $"{req.Scheme}://{host}{req.Path}{req.QueryString.Value}";
 
-            // Convert the body stream into a byte array
-            var rawForm = new byte[req.Body.Length];
-            req.Body.Read(rawForm, 0, rawForm.Length);
+            // Get the raw query string (Suave doesn't include the ? in the beginning)
+            var rawQuery = req.QueryString.Value.Substring(Math.Min(req.QueryString.Value.Length, 1));
 
+            // Get files and multipart fields from a form request
+            var files = new List<Http.HttpUpload>();
+            var multipartFields = new List<Tuple<string, string>>();
+            
+            if (req.HasFormContentType && req.Form != null && req.Form.Count > 0)
+            {
+                multipartFields.AddRange(
+                    req.Form.Select(field => new Tuple<string, string>(field.Key, field.Value)));
 
-            //TraceHeader.create()
+                if (req.Form.Files != null && req.Form.Files.Count > 0)
+                {
+                    foreach (var file in req.Form.Files)
+                    {
+                        var tempFileName = Path.GetTempFileName();
+
+                        using (var fileStream = File.Open(tempFileName, FileMode.OpenOrCreate))
+                            await file.OpenReadStream().CopyToAsync(fileStream);
+
+                        files.Add(
+                            new Http.HttpUpload(
+                                file.Name,
+                                file.FileName,
+                                file.ContentType,
+                                tempFileName));
+                    }
+                }
+            }
+
+            // Get the raw body
+            // (This will be an empty byte array if the stream has already been
+            // read during the form upload)
+            var rawForm = await req.Body.ReadBytesAsync();
 
             return Http.HttpContextModule.create(
                 new Http.HttpRequest(
                     req.Protocol,
                     new Uri(absoluteUrl),
-                    host, // ToDo: Check if it should contain the port or not
+                    context.Request.Host.Host,
                     HttpMethodFromString(req.Method),
                     headers,
                     rawForm,
-                    "rawQuery",
-                    null, // FSharpList<HttpUpload> files,
-                    null, // FSharpList<Tuple<string,string>> multiPartFields
-                    null), // TraceHeader trace
-                null, // HttpRuntime
-                null , // Connection
-                false); // bool writePreamble
+                    rawQuery,
+                    ListModule.OfSeq(files),
+                    ListModule.OfSeq(multipartFields),
+                    TraceHeader.parseTraceHeaders(headers)),
+                Http.HttpRuntimeModule.empty, // ToDo
+                ConnectionModule.empty , // ToDo
+                false); // bool writePreamble What is that? ToDo
         }
 
         public static Http.HttpMethod HttpMethodFromString(string method)

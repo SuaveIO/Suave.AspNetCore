@@ -1,10 +1,11 @@
 {
-  "version": "1.0.0-*",
+  "version": "0.1.0-*",
 
   "dependencies": {
-    "Microsoft.AspNetCore.Http": "1.0.0",
-    "NETStandard.Library": "1.6.0",
-    "Suave": "2.0.0-alpha5"
+    "Microsoft.AspNetCore.Http": "1.1.0",
+    "Microsoft.AspNetCore.Server.IISIntegration": "1.1.0",
+    "NETStandard.Library": "1.6.1",
+    "Suave": "2.0.0-*"
   },
 
   "frameworks": {

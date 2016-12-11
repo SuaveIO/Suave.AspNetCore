@@ -7,7 +7,7 @@
 
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>925044aa-aaa6-42b6-8a5e-25919b472204</ProjectGuid>
+    <ProjectGuid>e5a4263d-7f4d-4f21-af5c-372b36842d15</ProjectGuid>
     <RootNamespace>Suave.AspNetCore.Demo</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>

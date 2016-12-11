@@ -8,7 +8,8 @@
     "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
     "Microsoft.AspNetCore.Server.Kestrel": "1.0.1",
     "Microsoft.Extensions.Logging.Console": "1.0.0",
-    "Suave.AspNetCore": "1.0.0-*"
+    "Suave": "2.0.0-rc2",
+    "Suave.AspNetCore": "0.1.0-*"
   },
 
   "tools": {
