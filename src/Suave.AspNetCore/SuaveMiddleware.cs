@@ -28,7 +28,8 @@ namespace Suave.AspNetCore
             if (context.WebSockets.IsWebSocketRequest)
             {
                 // ToDo
-                var suaveSocketConnection = ConnectionModule.empty;
+                // While it is not implemented yet defer to the next middleware
+                await _next.Invoke(context);
             }
             else
             {
