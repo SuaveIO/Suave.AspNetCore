@@ -12,13 +12,17 @@ namespace Suave.AspNetCore
 {
     public static class HttpContextExtensions
     {
-        public static async Task<Http.HttpRequest> ToSuaveHttpRequest(this HttpRequest request)
+        public static async Task<Http.HttpRequest> ToSuaveHttpRequest(
+            this HttpRequest request,
+            bool preserveHttpHeaderCasing = false)
         {
             // Get HTTP headers
             var headers = 
                 ListModule.OfSeq(
                     request.Headers
-                        .Select(h => new Tuple<string, string>(h.Key, h.Value))
+                        .Select(h => new Tuple<string, string>(
+                            preserveHttpHeaderCasing ? h.Key : h.Key.ToLower(), 
+                            h.Value))
                         .ToList());
 
             // Get the absolute URL
@@ -91,15 +95,13 @@ namespace Suave.AspNetCore
             }
         }
 
-        public static async Task SetResponseFromSuaveHttpContext(this HttpContext context, Http.HttpContext suaveContext)
+        public static async Task SetResponseFromSuaveResult(this HttpContext context, Http.HttpResult suaveResult)
         {
-            var suaveResponse = suaveContext.response;
-
             // Set HTTP status code
-            context.Response.StatusCode = suaveResponse.status.code;
+            context.Response.StatusCode = suaveResult.status.code;
 
             // Set HTTP response headers
-            foreach (var header in suaveResponse.headers)
+            foreach (var header in suaveResult.headers)
             {
                 var key = header.Item1;
                 var value = header.Item2;
@@ -108,15 +110,15 @@ namespace Suave.AspNetCore
             }
 
             // Set HTTP body
-            if (suaveResponse.content.IsBytes)
+            if (suaveResult.content.IsBytes)
             {
-                var bytes = ((Http.HttpContent.Bytes)suaveResponse.content).Item;
+                var bytes = ((Http.HttpContent.Bytes)suaveResult.content).Item;
                 context.Response.Headers["Content-Length"] = new StringValues(bytes.Length.ToString());
                 await context.Response.Body.WriteAsync(bytes, 0, bytes.Length);
             }
-            else if (suaveResponse.content.IsSocketTask)
+            else if (suaveResult.content.IsSocketTask)
             {
-                var socketTask = ((Http.HttpContent.SocketTask) suaveResponse.content).Item;
+                var socketTask = ((Http.HttpContent.SocketTask)suaveResult.content).Item;
 
                 //ToDo
                 throw new NotImplementedException("SocketTask has not been implemeted yet.");
