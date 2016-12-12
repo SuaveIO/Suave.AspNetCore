@@ -14,7 +14,7 @@ namespace Suave.AspNetCore
     {
         public static async Task<Http.HttpRequest> ToSuaveHttpRequest(
             this HttpRequest request,
-            bool preserveHttpHeaderCasing = false)
+            bool preserveHttpHeaderCasing)
         {
             // Get HTTP headers
             var headers = 

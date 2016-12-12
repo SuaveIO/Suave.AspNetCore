@@ -16,7 +16,7 @@ namespace Suave.AspNetCore
         public SuaveMiddleware(
             RequestDelegate next, 
             FSharpFunc<Http.HttpContext, FSharpAsync<FSharpOption<Http.HttpContext>>> app,
-            bool preserveHttpHeaderCasing = false)
+            bool preserveHttpHeaderCasing)
         {
             _next = next;
             _app = app;

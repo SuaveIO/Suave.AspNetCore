@@ -1,10 +1,19 @@
 {
+  "name": "Suave.AspNetCore",
   "version": "0.1.0-*",
+  "description": "Small .NET Core library which provides middleware to run a Suave app (on top of Kestrel) within ASP.NET Core.",
+  "copyright": "Copyright 2016 Dustin Moris Gorski",
+  "authors": [ "Dustin Moris Gorski" ],
+  "language": "en-GB",
+
+  "buildOptions": {
+    "warningsAsErrors": true,
+    "optimize": true
+  },
 
   "dependencies": {
     "Microsoft.AspNetCore.Http": "1.1.0",
     "Microsoft.AspNetCore.WebSockets.Server": "0.1.0",
-    "Microsoft.AspNetCore.Server.IISIntegration": "1.1.0",
     "NETStandard.Library": "1.6.1",
     "Suave": "2.0.0-*"
   },
@@ -12,6 +21,22 @@
   "frameworks": {
     "netstandard1.6": {
       "imports": "dnxcore50"
+    },
+    "net46": {}
+  },
+
+  "packOptions": {
+    "summary": "Small .NET Core library which provides middleware to run a Suave app (on top of Kestrel) within ASP.NET Core.",
+    "tags": [ "Suave", "AspNetCore", "Kestrel", "Middleware", "Web", "Micro", "Service" ],
+    "owners": [ "Dustin Moris Gorski" ],
+    "releaseNotes": "https://github.com/dustinmoris/Suave.AspNetCore/releases",
+    "iconUrl": "https://raw.githubusercontent.com/dustinmoris/Suave.AspNetCore/master/suave.png",
+    "projectUrl": "https://github.com/dustinmoris/Suave.AspNetCore",
+    "licenseUrl": "https://raw.githubusercontent.com/dustinmoris/Suave.AspNetCore/master/LICENSE",
+    "requireLicenseAcceptance": true,
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/dustinmoris/Suave.AspNetCore"
     }
   }
 }
