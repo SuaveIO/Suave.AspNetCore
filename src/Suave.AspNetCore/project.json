@@ -3,6 +3,7 @@
 
   "dependencies": {
     "Microsoft.AspNetCore.Http": "1.1.0",
+    "Microsoft.AspNetCore.WebSockets.Server": "0.1.0",
     "Microsoft.AspNetCore.Server.IISIntegration": "1.1.0",
     "NETStandard.Library": "1.6.1",
     "Suave": "2.0.0-*"

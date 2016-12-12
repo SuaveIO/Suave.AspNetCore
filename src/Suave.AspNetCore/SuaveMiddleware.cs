@@ -25,15 +25,25 @@ namespace Suave.AspNetCore
 
         public async Task Invoke(HttpContext context)
         {
+            if (context.WebSockets.IsWebSocketRequest)
+            {
+                // ToDo
+                var suaveSocketConnection = ConnectionModule.empty;
+            }
+            else
+            {
+                await HandleWebRequest(context);
+            }
+        }
+
+        protected async Task HandleWebRequest(HttpContext context)
+        {
             var suaveRequest = await context.Request.ToSuaveHttpRequest(_preserveHttpHeaderCasing);
 
             // Runtime settings to be set via middleware in ASP.NET Core
             var suaveRuntime = Http.HttpRuntimeModule.empty;
-
-            // ToDo
             var suaveSocketConnection = ConnectionModule.empty;
-
-            var suaveContext = 
+            var suaveContext =
                 Http.HttpContextModule.create(
                     suaveRequest,
                     suaveRuntime,
