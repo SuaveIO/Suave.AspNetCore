@@ -7,42 +7,39 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using Microsoft.FSharp.Collections;
 using Suave.Logging;
-using Suave.Sockets;
 
 namespace Suave.AspNetCore
 {
     public static class HttpContextExtensions
     {
-        public static async Task<Http.HttpContext> ToSuaveHttpContext(this HttpContext context)
+        public static async Task<Http.HttpRequest> ToSuaveHttpRequest(this HttpRequest request)
         {
-            var req = context.Request;
-
             // Get HTTP headers
             var headers = 
                 ListModule.OfSeq(
-                    req.Headers
+                    request.Headers
                         .Select(h => new Tuple<string, string>(h.Key, h.Value))
                         .ToList());
 
             // Get the absolute URL
-            var host = context.Request.Host.Value;
-            var absoluteUrl = $"{req.Scheme}://{host}{req.Path}{req.QueryString.Value}";
+            var host = request.Host.Value;
+            var absoluteUrl = $"{request.Scheme}://{host}{request.Path}{request.QueryString.Value}";
 
             // Get the raw query string (Suave doesn't include the ? in the beginning)
-            var rawQuery = req.QueryString.Value.Substring(Math.Min(req.QueryString.Value.Length, 1));
+            var rawQuery = request.QueryString.Value.Substring(Math.Min(request.QueryString.Value.Length, 1));
 
             // Get files and multipart fields from a form request
             var files = new List<Http.HttpUpload>();
             var multipartFields = new List<Tuple<string, string>>();
             
-            if (req.HasFormContentType && req.Form != null && req.Form.Count > 0)
+            if (request.HasFormContentType && request.Form != null && request.Form.Count > 0)
             {
                 multipartFields.AddRange(
-                    req.Form.Select(field => new Tuple<string, string>(field.Key, field.Value)));
+                    request.Form.Select(field => new Tuple<string, string>(field.Key, field.Value)));
 
-                if (req.Form.Files != null && req.Form.Files.Count > 0)
+                if (request.Form.Files != null && request.Form.Files.Count > 0)
                 {
-                    foreach (var file in req.Form.Files)
+                    foreach (var file in request.Form.Files)
                     {
                         var tempFileName = Path.GetTempFileName();
 
@@ -62,23 +59,19 @@ namespace Suave.AspNetCore
             // Get the raw body
             // (This will be an empty byte array if the stream has already been
             // read during the form upload)
-            var rawForm = await req.Body.ReadBytesAsync();
-
-            return Http.HttpContextModule.create(
-                new Http.HttpRequest(
-                    req.Protocol,
-                    new Uri(absoluteUrl),
-                    context.Request.Host.Host,
-                    HttpMethodFromString(req.Method),
-                    headers,
-                    rawForm,
-                    rawQuery,
-                    ListModule.OfSeq(files),
-                    ListModule.OfSeq(multipartFields),
-                    TraceHeader.parseTraceHeaders(headers)),
-                Http.HttpRuntimeModule.empty, // ToDo
-                ConnectionModule.empty , // ToDo
-                false); // bool writePreamble What is that? ToDo
+            var rawForm = await request.Body.ReadBytesAsync();
+            
+            return new Http.HttpRequest(
+                request.Protocol,
+                new Uri(absoluteUrl),
+                request.Host.Host,
+                HttpMethodFromString(request.Method),
+                headers,
+                rawForm,
+                rawQuery,
+                ListModule.OfSeq(files),
+                ListModule.OfSeq(multipartFields),
+                TraceHeader.parseTraceHeaders(headers));
         }
 
         public static Http.HttpMethod HttpMethodFromString(string method)

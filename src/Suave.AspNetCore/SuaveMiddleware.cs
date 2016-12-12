@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.FSharp.Control;
 using Microsoft.FSharp.Core;
+using Suave.Sockets;
 
 namespace Suave.AspNetCore
 {
@@ -19,7 +20,15 @@ namespace Suave.AspNetCore
 
         public async Task Invoke(HttpContext context)
         {
-            var suaveContext = await context.ToSuaveHttpContext();
+            var suaveRequest = await context.Request.ToSuaveHttpRequest();
+            var suaveContext = 
+                Http.HttpContextModule.create(
+                    suaveRequest,
+                    // Runtime settings to be set via middleware in ASP.NET Core
+                    Http.HttpRuntimeModule.empty,
+                    // ToDo
+                    ConnectionModule.empty,
+                    false);
             var asyncWorkflow = _app.Invoke(suaveContext);
             var result = await FSharpAsync.StartAsTask(
                 asyncWorkflow,

@@ -9,8 +9,7 @@ let main argv =
     let host =
         WebHostBuilder()
             .UseKestrel()
-            .UseContentRoot(Directory.GetCurrentDirectory())
-            .UseStartup<AspNetCoreFSharp.Startup>()
+            .UseStartup<Suave.AspNetCore.App.Startup>()
             .Build()
     host.Run()
     0
