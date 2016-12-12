@@ -63,7 +63,7 @@ namespace Suave.AspNetCore
             // Get the raw body
             // (This will be an empty byte array if the stream has already been
             // read during the form upload)
-            var rawForm = await request.Body.ReadBytesAsync();
+            var rawForm = await request.Body.ReadAllBytesAsync();
             
             return new Http.HttpRequest(
                 request.Protocol,
