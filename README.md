@@ -1,4 +1,4 @@
-# ![Suave](https://raw.githubusercontent.com/dustinmoris/Suave.AspNetCore/master/suave.png) Suave.AspNetCore
+# Suave.AspNetCore
 
 [Suave.AspNetCore](ToDo) is a small .NET Core library which provides an [ASP.NET Core middleware](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware) to run a [Suave](https://suave.io/) app (on top of [Kestrel](https://github.com/aspnet/KestrelHttpServer)) within ASP.NET Core.
 
@@ -6,9 +6,7 @@ NuGet badge here
 
 ## Current release information
 
-The current version has a dependency on [Suave 2.0.0-rc3](https://www.nuget.org/packages/Suave/2.0.0-rc3), which is not considered a stable release yet.
-
-Suave.AspNetCore only supports Suave's web request handling, but doesn't support Suave's web socket handling yet, which will be added in a later version.
+The current version has a dependency on [Suave 2.0.0-rc3](https://www.nuget.org/packages/Suave/2.0.0-rc3), which is not considered a stable release yet and only supports Suave's web request handling. Support for web sockets will come soon.
 
 ## Framework support
 
