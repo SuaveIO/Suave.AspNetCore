@@ -1,11 +1,11 @@
 # Suave.AspNetCore
 
-[Suave.AspNetCore](ToDo) is a small .NET Core library which provides an [ASP.NET Core middleware](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware) to run a [Suave](https://suave.io/) app (on top of [Kestrel](https://github.com/aspnet/KestrelHttpServer)) within ASP.NET Core.
+[Suave.AspNetCore](https://www.nuget.org/packages/Suave.AspNetCore/) is a small .NET Core library which provides an [ASP.NET Core middleware](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware) to run a [Suave](https://suave.io/) app (on top of [Kestrel](https://github.com/aspnet/KestrelHttpServer)) within ASP.NET Core.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/bj7dxtx4sc8v6x9o/branch/master?svg=true)](https://ci.appveyor.com/project/dustinmoris/suave-aspnetcore/branch/master)
 [![NuGet Info](https://buildstats.info/nuget/Suave.AspNetCore)](https://www.nuget.org/packages/Suave.AspNetCore/)
 
-[![Build history](https://buildstats.info/appveyor/chart/dustinmoris/Suave.AspNetCore)](https://ci.appveyor.com/project/dustinmoris/Suave.AspNetCore/history)
+[![Build history](https://buildstats.info/appveyor/chart/dustinmoris/suave-aspnetcore)](https://ci.appveyor.com/project/dustinmoris/suave-aspnetcore/history)
 
 ## Current release information
 
@@ -85,7 +85,7 @@ dotnet pack
 
 ## Credits
 
-Massive thank you to [ademar](https://github.com/ademar) and [haf](https://github.com/haf) for creating (and open sourcing) Suave in the first place and also a big thanks to [Krzysztof Cieslak](https://github.com/Krzysztof-Cieslak) for open sourcing *a super early alpha version* of [Suave.Kestrel](https://github.com/Krzysztof-Cieslak/Suave.Kestrel) which was as a great kickstarter to get [Suave.AspNetCore](ToDo) running.
+Massive thank you to [ademar](https://github.com/ademar) and [haf](https://github.com/haf) for creating (and open sourcing) Suave in the first place and also a big thanks to [Krzysztof Cieslak](https://github.com/Krzysztof-Cieslak) for open sourcing *a super early alpha version* of [Suave.Kestrel](https://github.com/Krzysztof-Cieslak/Suave.Kestrel) which was as a great kickstarter to get [Suave.AspNetCore](https://www.nuget.org/packages/Suave.AspNetCore/) running.
 
 ## Contribution
 
