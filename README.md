@@ -2,7 +2,10 @@
 
 [Suave.AspNetCore](ToDo) is a small .NET Core library which provides an [ASP.NET Core middleware](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware) to run a [Suave](https://suave.io/) app (on top of [Kestrel](https://github.com/aspnet/KestrelHttpServer)) within ASP.NET Core.
 
-NuGet badge here
+[![Build status](https://ci.appveyor.com/api/projects/status/bj7dxtx4sc8v6x9o/branch/master?svg=true)](https://ci.appveyor.com/project/dustinmoris/suave-aspnetcore/branch/master)
+[![NuGet Info](https://buildstats.info/nuget/Suave.AspNetCore)](https://www.nuget.org/packages/Suave.AspNetCore/)
+
+[![Build history](https://buildstats.info/appveyor/chart/dustinmoris/Suave.AspNetCore)](https://ci.appveyor.com/project/dustinmoris/Suave.AspNetCore/history)
 
 ## Current release information
 
