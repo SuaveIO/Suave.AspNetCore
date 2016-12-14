@@ -9,7 +9,7 @@
 
 ## Current release information
 
-The current version has a dependency on [Suave 2.0.0-rc3](https://www.nuget.org/packages/Suave/2.0.0-rc3), which is not considered a stable release yet. Suave.AspNetCore also only supports Suave's web request handling at the moment and support for web sockets will follow soon.
+The current version has a dependency on [Suave 2.0.0-rc3](https://www.nuget.org/packages/Suave/2.0.0-rc3), which is not considered a stable release yet. At the moment Suave.AspNetCore also only supports Suave's web request handling and support for web sockets will follow soon.
 
 ## Framework support
 
@@ -67,7 +67,7 @@ By default this setting is disabled to match existing Suave applications.
 
 #### Error handling and other Suave config settings
 
-Suave.AspNetCore allows you to hook a Suave web application (`WebPart`) into the ASP.NET Core pipeline. Anything that was in the `SuaveConfig` was web server specific and required to run Suave's own web server via `startWebServer`. In ASP.NET Core there are other means to configure the same settings. For more information please check out the [ASP.NET Core Fundamentals](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/).
+Suave.AspNetCore allows you to hook a Suave web application (`WebPart`) into the ASP.NET Core pipeline. Anything that was configured in the `SuaveConfig` was web server specific and required to run Suave's own web server via `startWebServer`. In ASP.NET Core there are other means to configure the same settings. For more information please check out the [ASP.NET Core Fundamentals](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/).
 
 ## How to build
 
