@@ -9,7 +9,7 @@
 
 ## Current release information
 
-The current version has a dependency on [Suave 2.0.0-rc3](https://www.nuget.org/packages/Suave/2.0.0-rc3), which is not considered a stable release yet and only supports Suave's web request handling. Support for web sockets will come soon.
+The current version has a dependency on [Suave 2.0.0-rc3](https://www.nuget.org/packages/Suave/2.0.0-rc3), which is not considered a stable release yet. Suave.AspNetCore also only supports Suave's web request handling at the moment and support for web sockets will follow soon.
 
 ## Framework support
 
@@ -57,7 +57,7 @@ In Suave all HTTP headers are stored in lower case inside the `Suave.Http.HttpRe
 
 For example if a client sends the HTTP header `Content-Type: application/json` with the request, then it would be stored as such in ASP.NET Core, but in lower case in Suave: `content-type: application/json`.
 
-You can set the `preserveHttpHeaderCasing` parameter to `true` when configuring the Suave middleware to keep the original casing alive:
+When configuring the Suave middleware you can set the `preserveHttpHeaderCasing` parameter to `true` to keep the original casing present (ASP.NET Core style):
 
 ```
 app.UseSuave(App.helloWorld, true)
@@ -67,7 +67,7 @@ By default this setting is disabled to match existing Suave applications.
 
 #### Error handling and other Suave config settings
 
-ToDo
+Suave.AspNetCore allows you to hook a Suave web application (`WebPart`) into the ASP.NET Core pipeline. Anything that was in the `SuaveConfig` was web server specific and required to run Suave's own web server via `startWebServer`. In ASP.NET Core there are other means to configure the same settings. For more information please check out the [ASP.NET Core Fundamentals](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/).
 
 ## How to build
 
