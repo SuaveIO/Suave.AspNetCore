@@ -1,5 +1,6 @@
 namespace Suave.AspNetCore.App
 
+open System
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
 open Microsoft.AspNetCore.Http
@@ -12,6 +13,9 @@ open Suave.Operators
 open Suave.DotLiquid
 open Suave.Successful
 open Suave.AspNetCore
+open Suave.Sockets
+open Suave.Sockets.Control
+open Suave.WebSocket
 
 module App =
     //
@@ -29,6 +33,27 @@ module App =
         >=> DotLiquid.page "index.html" { Message = "Hello World from a DotLiquid template." }
 
     //
+    // WebSockets
+    //
+    let echo (webSocket : WebSocket) =
+        fun ctx ->
+            socket {
+                let loop = ref true
+                while !loop do
+                    let! msg = webSocket.read()
+                    match msg with
+                    | (Text, data, true) ->
+                        let str = UTF8.toString data
+                        do! webSocket.send Text (ArraySegment data) true
+                    | (Ping, _, _) ->
+                        do! webSocket.send Pong (ArraySegment([||])) true
+                    | (Close, _, _) ->
+                        do! webSocket.send Close (ArraySegment([||])) true
+                        loop := false
+                    | _ -> ()
+            }
+
+    //
     // Everything else
     //
     let catchAll =
@@ -44,6 +69,7 @@ module App =
     //
     let app =
         choose [
+            path "/websocket" >=> handShake echo
             dotLiquidHandler
             catchAll
             ]
