@@ -1,9 +1,12 @@
+using System;
+using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.FSharp.Control;
 using Microsoft.FSharp.Core;
 using Suave.Sockets;
+using Suave.Utils;
 
 namespace Suave.AspNetCore
 {
@@ -27,6 +30,26 @@ namespace Suave.AspNetCore
         {
             if (context.WebSockets.IsWebSocketRequest)
             {
+                var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+
+                var buffer = new byte[4096];
+                var lineBuffer = new ArraySegment<byte>(buffer);
+
+                var bufferManager =
+                    new BufferManager(
+                        0, // int totalBytes
+                        0, // int bufferSize
+                        true); // bool autoGrow
+
+                var connection =
+                    new Connection(
+                        null, // SocketBinding
+                        null, // ITransport
+                        bufferManager, // BufferManager
+                        lineBuffer, // ArraySegment<byte> lineBuffer
+                        null, //FSharpList<BufferSegment> segments,
+                        0); // intlineBufferCount
+
                 // ToDo
                 // While it is not implemented yet defer to the next middleware
                 await _next.Invoke(context);
