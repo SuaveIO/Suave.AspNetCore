@@ -22,19 +22,19 @@
     ]
   },
   "dependencies": {
-    "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-*",
+    "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-161205",
     "Microsoft.AspNetCore.Diagnostics": "1.1.0",
     "Microsoft.AspNetCore.Server.Kestrel": "1.1.0",
     "Microsoft.Extensions.Logging.Console": "1.1.0",
-    "Suave": "2.0.0-*",
+    "Suave": "2.0.0-rc8",
     "Suave.AspNetCore": "0.1.0",
-    "Suave.DotLiquid": "2.0.0-*",
-    "DotLiquid": "2.0.61",
-    "Newtonsoft.Json": "9.0.1"
+    "Suave.DotLiquid": "2.0.0-rc8",
+    "Newtonsoft.Json": "9.0.1",
+    "DotLiquid": "2.0.64"
   },
   "tools": {
     "dotnet-compile-fsc": {
-      "version": "1.0.0-preview2-*",
+      "version": "1.0.0-preview2-020000",
       "imports": [
         "dnxcore50",
         "portable-net45+win81",
