@@ -118,10 +118,7 @@ namespace Suave.AspNetCore
             }
             else if (suaveResult.content.IsSocketTask)
             {
-                var socketTask = ((Http.HttpContent.SocketTask)suaveResult.content).Item;
-
-                //ToDo
-                throw new NotImplementedException("SocketTask has not been implemeted yet.");
+                throw new NotImplementedException("Suave Socket Tasks are not supported in Suave.AspNetCore. Please use the Suave.AspNetCore.WebSocketMiddleware replacement instead.");
             }
         }
     }

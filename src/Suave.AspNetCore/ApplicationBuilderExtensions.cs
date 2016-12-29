@@ -19,5 +19,12 @@ namespace Suave.AspNetCore
         {
             return builder.UseMiddleware<SuaveMiddleware>(app, preserveHttpHeaderCasing);
         }
+
+        public static IApplicationBuilder UseWebSockets(
+            this IApplicationBuilder builder,
+            FSharpFunc<System.Net.WebSockets.WebSocket, FSharpAsync<Unit>> app)
+        {
+            return builder.UseMiddleware<WebSocketMiddleware>(app);
+        }
     }
 }
