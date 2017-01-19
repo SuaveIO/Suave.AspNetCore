@@ -116,10 +116,6 @@ namespace Suave.AspNetCore
                 context.Response.Headers["Content-Length"] = new StringValues(bytes.Length.ToString());
                 await context.Response.Body.WriteAsync(bytes, 0, bytes.Length);
             }
-            else if (suaveResult.content.IsSocketTask)
-            {
-                throw new NotImplementedException("Suave Socket Tasks are not supported in Suave.AspNetCore. Please use the Suave.AspNetCore.WebSocketMiddleware replacement instead.");
-            }
         }
     }
 }
