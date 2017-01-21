@@ -9,14 +9,16 @@
 
 ## Current release information
 
-The current version has a dependency on [Suave 2.0.0-rc3](https://www.nuget.org/packages/Suave/2.0.0-rc3), which is not considered a stable release yet. At the moment Suave.AspNetCore also only supports Suave's web request handling and support for web sockets will follow soon.
+The current version has a dependency on [Suave 2.0.2](https://www.nuget.org/packages/Suave/2.0.2), and supports Suave's web request handling and the `ErrorHandler` function.
+
+If you wish to use web sockets in ASP.NET Core please check out the [ASP.NET Core Web Sockets](https://github.com/aspnet/WebSockets) project.
 
 ## Framework support
 
-| Framework | Supported versions | Limitations |
+| Framework | Supported versions |
 | :--- | :--- | :--- |
-| .NET Standard | >= 1.6 | Suave 2.0.0-* requires netstandard1.6 or higher. |
-| Full .NET | >= 4.6 | Microsoft.AspNetCore.Http and Microsoft.AspNetCore.WebSockets.Server requires .NET 4.6 or higher. |
+| .NET Standard | >= 1.6 |
+| Full .NET | >= 4.6 |
 
 ## Setup
 
@@ -49,6 +51,20 @@ type Startup() =
         app.UseSuave(App.helloWorld) |> ignore
 ```
 
+Optionally you can also register a Suave `ErrorHandler` function to deal with unhandleded exceptions:
+
+```
+type Startup() =
+    member __.Configure (app : IApplicationBuilder)
+                        (env : IHostingEnvironment)
+                        (loggerFactory : ILoggerFactory) =
+
+        // Make sure to register the error handler as the very first middleware
+        app.UseSuaveErrorHandler(App.errorHandler) |> ignore
+
+        app.UseSuave(App.helloWorld) |> ignore
+```
+
 ## Additional configuration
 
 #### HTTP header casing
@@ -65,7 +81,7 @@ app.UseSuave(App.helloWorld, true)
 
 By default this setting is disabled to match existing Suave applications.
 
-#### Error handling and other Suave config settings
+#### Suave config settings
 
 Suave.AspNetCore allows you to hook a Suave web application (`WebPart`) into the ASP.NET Core pipeline. Anything that was configured in the `SuaveConfig` was web server specific and required to run Suave's own web server via `startWebServer`. In ASP.NET Core there are other means to configure the same settings. For more information please check out the [ASP.NET Core Fundamentals](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/).
 
