@@ -3,19 +3,24 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.FSharp.Control;
 using Microsoft.FSharp.Core;
-using Suave.Sockets;
+
+using SuaveApplication = 
+    Microsoft.FSharp.Core.FSharpFunc<
+        Suave.Http.HttpContext, 
+        Microsoft.FSharp.Control.FSharpAsync<
+            Microsoft.FSharp.Core.FSharpOption<Suave.Http.HttpContext>>>;
 
 namespace Suave.AspNetCore
 {
     public class SuaveMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly FSharpFunc<Http.HttpContext, FSharpAsync<FSharpOption<Http.HttpContext>>> _app;
+        private readonly SuaveApplication _app;
         private readonly bool _preserveHttpHeaderCasing;
 
         public SuaveMiddleware(
             RequestDelegate next,
-            FSharpFunc<Http.HttpContext, FSharpAsync<FSharpOption<Http.HttpContext>>> app,
+            SuaveApplication app,
             bool preserveHttpHeaderCasing)
         {
             _next = next;
@@ -25,18 +30,7 @@ namespace Suave.AspNetCore
 
         public async Task Invoke(HttpContext context)
         {
-            var suaveRequest = await context.Request.ToSuaveHttpRequest(_preserveHttpHeaderCasing);
-
-            // Runtime settings to be set via middleware in ASP.NET Core
-            var suaveRuntime = Http.HttpRuntimeModule.empty;
-            var suaveSocketConnection = ConnectionModule.empty;
-            var suaveContext =
-                Http.HttpContextModule.create(
-                    suaveRequest,
-                    suaveRuntime,
-                    suaveSocketConnection,
-                    false);
-
+            var suaveContext = await context.ToSuaveHttpContext(_preserveHttpHeaderCasing);
             var asyncWorkflow = _app.Invoke(suaveContext);
 
             var result = await FSharpAsync.StartAsTask(

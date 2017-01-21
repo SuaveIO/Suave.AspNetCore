@@ -7,15 +7,18 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using Microsoft.FSharp.Collections;
 using Suave.Logging;
+using Suave.Sockets;
 
 namespace Suave.AspNetCore
 {
     public static class HttpContextExtensions
     {
-        public static async Task<Http.HttpRequest> ToSuaveHttpRequest(
-            this HttpRequest request,
+        public static async Task<Http.HttpContext> ToSuaveHttpContext(
+            this HttpContext context,
             bool preserveHttpHeaderCasing)
         {
+            var request = context.Request;
+
             // Get HTTP headers
             var headers = 
                 ListModule.OfSeq(
@@ -65,7 +68,7 @@ namespace Suave.AspNetCore
             // read during the form upload)
             var rawForm = await request.Body.ReadAllBytesAsync();
             
-            return new Http.HttpRequest(
+            var suaveRequest = new Http.HttpRequest(
                 request.Protocol,
                 new Uri(absoluteUrl),
                 request.Host.Host,
@@ -76,6 +79,15 @@ namespace Suave.AspNetCore
                 ListModule.OfSeq(files),
                 ListModule.OfSeq(multipartFields),
                 TraceHeader.parseTraceHeaders(headers));
+
+            var suaveRuntime = Http.HttpRuntimeModule.empty;
+            var suaveSocketConnection = ConnectionModule.empty;
+            return
+                Http.HttpContextModule.create(
+                    suaveRequest,
+                    suaveRuntime,
+                    suaveSocketConnection,
+                    false);
         }
 
         public static Http.HttpMethod HttpMethodFromString(string method)
