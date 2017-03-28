@@ -16,7 +16,7 @@ If you wish to use web sockets in ASP.NET Core please check out the [ASP.NET Cor
 ## Framework support
 
 | Framework | Supported versions |
-| :--- | :--- | :--- |
+| :--- | :--- | 
 | .NET Standard | >= 1.6 |
 | Full .NET | >= 4.6 |
 
