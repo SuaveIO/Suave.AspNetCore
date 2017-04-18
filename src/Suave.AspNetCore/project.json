@@ -15,7 +15,7 @@
     "Microsoft.AspNetCore.Http": "1.1.0",
     "Microsoft.AspNetCore.Diagnostics": "1.1.0",
     "NETStandard.Library": "1.6.1",
-    "Suave": "2.0.3"
+    "Suave": "2.1.0"
   },
 
   "frameworks": {
