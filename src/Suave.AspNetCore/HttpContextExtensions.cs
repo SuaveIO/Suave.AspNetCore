@@ -118,7 +118,16 @@ namespace Suave.AspNetCore
                 var key = header.Item1;
                 var value = header.Item2;
 
-                context.Response.Headers.Add(key, new StringValues(value));
+                StringValues existingStringValues;
+        
+                if(!context.Response.Headers.TryGetValue(key, out existingStringValues))
+                {
+                    context.Response.Headers[key] = new StringValues(value);
+                }
+                else 
+                {
+                    context.Response.Headers[key] = StringValues.Concat(existingStringValues, new StringValues(value));
+                }
             }
 
             // Set HTTP body
