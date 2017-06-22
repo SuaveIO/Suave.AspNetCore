@@ -1,6 +1,6 @@
 {
   "name": "Suave.AspNetCore",
-  "version": "0.4.0-*",
+  "version": "0.4.1-*",
   "description": "Small .NET Core library which provides middleware to run a Suave app (on top of Kestrel) within ASP.NET Core.",
   "copyright": "Copyright 2016 Dustin Moris Gorski",
   "authors": [ "Dustin Moris Gorski" ],
